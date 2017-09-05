@@ -1,4 +1,4 @@
 module.exports = {
     initLogger:require('./initLogger').initLogger,
-    Logger: require('./Logger')
+    Logger: require('./logger')
 };
