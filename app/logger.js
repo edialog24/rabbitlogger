@@ -1,23 +1,24 @@
 const {logConsts} = require('./initLogger');
 class Logger {
     constructor(opts) {
-        this.correlationId = opts.correlationId;
+        this.opts = opts;
+		this.opts.pid = logConsts.pid;
     }
     async log(msg) {
-        const data = {correlationId: this.correlationId, msg:msg,time:new Date().toISOString(), pid: logConsts.pid, type: 'log'};
+		const data = {...this.opts,msg:msg,time:new Date().toISOString(),level:'log'};
         console.log(data);
         var txt = await logConsts.ch.publish(logConsts.exchange, '', new Buffer(JSON.stringify(data)));
         return txt;
     }
     async error(msg) {
-        const data = {correlationId: this.correlationId, msg:msg,time:new Date().toISOString(), pid: logConsts.pid, type: 'error'};
-        console.log(data);
+        const data = {...this.opts,msg:msg,time:new Date().toISOString(),level:'error'};
+        console.error(data);
         var txt = await logConsts.ch.publish(logConsts.exchange, '', new Buffer(JSON.stringify(data)));
         return txt;
     }
     async info(msg) {
-        const data = {correlationId: this.correlationId, msg:msg,time:new Date().toISOString(), pid: logConsts.pid, type: 'info'};
-        console.log(data);
+        const data = {...this.opts,msg:msg,time:new Date().toISOString(),level:'info'};
+        console.info(data);
         var txt = await logConsts.ch.publish(logConsts.exchange, '', new Buffer(JSON.stringify(data)));
         return txt;
     }
