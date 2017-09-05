@@ -1,4 +1,4 @@
-let logConsts = {ch:undefined, exchange:'logs'};
+let logConsts = {ch:undefined, exchange:'logs', pid:''};
 /*
  Params:
  {
@@ -14,7 +14,8 @@ const initLogger = (opts) => {
             try {
                 console.log("INITIALIZTING CHANNEL");
                 var amqp = require('amqplib/callback_api');
-                const {url, exchange} = opts;
+                const {url, exchange, pid} = opts;
+                logConsts.pid = pid;
                 if (exchange) {
                     params.exchange = exchange;
                 }
