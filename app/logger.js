@@ -1,7 +1,10 @@
 const {logConsts} = require('./initLogger');
+const uuidV4 = require('uuid/v4');
 class Logger {
     constructor(opts) {
-        this.opts = opts;
+        this.opts = opts.correlationId;
+		if(!this.opts.correlationId)
+			this.opts.correlationId = (new Date().getTime()) + '_' + uuidV4();
 		this.opts.pid = logConsts.pid;
     }
     async log(msg) {
