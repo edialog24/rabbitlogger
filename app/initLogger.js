@@ -1,4 +1,4 @@
-let logConsts = {ch:undefined, exchange:'logs', pid:''};
+let logConsts = {ch:undefined, exchange:'logs', source:''};
 /*
  Params:
  {
@@ -14,8 +14,8 @@ const initLogger = (opts) => {
             try {
                 console.log("INITIALIZTING CHANNEL");
                 var amqp = require('amqplib/callback_api');
-                const {url, exchange, pid} = opts;
-                logConsts.pid = pid;
+                const {url, exchange, source} = opts;
+                logConsts.source = source;
                 if (exchange) {
                     params.exchange = exchange;
                 }
@@ -23,7 +23,7 @@ const initLogger = (opts) => {
                     conn.createChannel(function (err, ch) {
                         logConsts.ch = ch;
                         logConsts.ch.assertExchange(logConsts.exchange, 'fanout', {durable: false});
-                        console.log("CHANNEL READY");
+                        console.log("LOGGER READY");
                         res();
                     });
                 });
@@ -34,8 +34,6 @@ const initLogger = (opts) => {
         else {
             res();
         }
-    });
-    console.log("done initializing logger");
-
+    });  
 };
 module.exports = {initLogger, logConsts};
